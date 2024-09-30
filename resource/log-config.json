@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "disable_existing_loggers": false,
+    "filters": {
+        "custom_filter": {
+            "()": "app.util.log_util.CustomLogFilter"
+        }
+    },
+    "formatters": {
+        "detailed": {
+            "format": "%(asctime)s %(levelname)s [%(thread)d-%(threadName)s%(submit_id)s] %(name)s:%(lineno)d %(message)s",
+            "datefmt": "%Y-%m-%dT%H:%M:%S"
+        }
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "formatter": "detailed",
+            "filters": ["custom_filter"]
+        },
+        "file": {
+            "class": "app.util.log_util.CustomTimedRotatingFileHandler",
+            "level": "DEBUG",
+            "formatter": "detailed",
+            "filename": "logs/my_app.log",
+            "when": "M", 
+            "interval": 1,
+            "backupCount": 5,
+            "encoding": "utf-8",
+            "filters": ["custom_filter"]
+        }
+    },
+    "loggers": {
+        "root": {
+            "level": "DEBUG",
+            "handlers": ["console", "file"]
+        },
+        "uvicorn": {
+            "level": "CRITICAL",
+            "handlers": ["console", "file"],
+            "propagate": false
+        },
+        "uvicorn.error": {
+            "level": "CRITICAL",
+            "handlers": ["console", "file"],
+            "propagate": false
+        },
+        "uvicorn.access": {
+            "level": "CRITICAL",
+            "handlers": ["console", "file"],
+            "propagate": false
+        }
+    }
+}
