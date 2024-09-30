@@ -24,7 +24,7 @@
             "level": "DEBUG",
             "formatter": "detailed",
             "filename": "logs/my_app.log",
-            "when": "M", 
+            "when": "midnight", 
             "interval": 1,
             "backupCount": 5,
             "encoding": "utf-8",
