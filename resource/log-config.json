@@ -3,7 +3,7 @@
     "disable_existing_loggers": false,
     "filters": {
         "custom_filter": {
-            "()": "app.util.log_util.CustomLogFilter"
+            "()": "app.util.log_util.log_util.CustomLogFilter"
         }
     },
     "formatters": {
@@ -20,7 +20,7 @@
             "filters": ["custom_filter"]
         },
         "file": {
-            "class": "app.util.log_util.CustomTimedRotatingFileHandler",
+            "class": "app.util.log_util.log_util.CustomTimedRotatingFileHandler",
             "level": "DEBUG",
             "formatter": "detailed",
             "filename": "logs/my_app.log",

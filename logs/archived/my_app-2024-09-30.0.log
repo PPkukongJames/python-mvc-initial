@@ -1,2 +1,0 @@
-2024-09-30T12:01:31 DEBUG [17932-MainThread] asyncio:630 Using proactor: IocpProactor
-2024-09-30T12:01:31 INFO [17932-MainThread] main:15 Application startup

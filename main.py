@@ -1,10 +1,9 @@
 from fastapi import FastAPI,Request
-from app.util.log_util import setup_logger,set_submit_id  # Import log_util จาก app.util
+from app.util.log_util import setup_logger,set_submit_id
 import uvicorn 
 import json
 import contextvars
 from contextlib import asynccontextmanager  # noqa: E402
-
 from app.core.example import router as example_router
 
 app = FastAPI()
