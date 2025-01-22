@@ -6,6 +6,7 @@ import json
 import os
 import contextvars
 from datetime import datetime
+import pytz
 from app.core.config.application import APPLICATION_CONFIG
 
 submit_id_var = contextvars.ContextVar('submit_id', default='')
@@ -14,7 +15,19 @@ class CustomLogFilter(logging.Filter):
         # ดึงค่า submitId จาก ContextVar และเพิ่มเข้าไปใน LogRecord
         record.submit_id = submit_id_var.get('')  # ถ้าไม่มี submitId, ใส่เป็นค่าว่าง
         return True
-    
+class CustomFormatter(logging.Formatter):
+    def formatTime(self, record, datefmt=None):
+        # Convert the time to UTC+7 using pytz
+        utc_dt = datetime.utcfromtimestamp(record.created)
+        local_tz = pytz.timezone(APPLICATION_CONFIG['timezone'])  # UTC+7 timezone
+        local_dt = utc_dt.replace(tzinfo=pytz.utc).astimezone(local_tz)
+        
+        if datefmt:
+            s = local_dt.strftime(datefmt)[:-3]
+        else:
+            t = local_dt.strftime("%Y-%m-%d %H:%M:%S,%f")[:-3]
+            s = f"{t}.{int(record.msecs):03d}"  # Add milliseconds with a dot
+        return s
 class CustomTimedRotatingFileHandler(TimedRotatingFileHandler):
     def doRollover(self):
         super().doRollover()  # เรียกใช้งานการหมุนไฟล์ตามปกติ
