@@ -23,7 +23,7 @@
             "class": "app.util.log_util.log_util.CustomTimedRotatingFileHandler",
             "level": "DEBUG",
             "formatter": "detailed",
-            "filename": "logs/my_app.log",
+            "filename": "logs/<my_app>.log",
             "when": "midnight", 
             "interval": 1,
             "backupCount": 5,

@@ -1,3 +1,0 @@
-2024-10-01T13:57:45 DEBUG [888-MainThread] asyncio:630 Using proactor: IocpProactor
-2024-10-01T13:57:45 INFO [888-MainThread] main:14 Application startup
-2024-10-01T13:57:55 INFO [888-MainThread] main:17 Application shutdown

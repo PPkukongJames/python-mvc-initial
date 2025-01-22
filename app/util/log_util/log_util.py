@@ -6,6 +6,7 @@ import json
 import os
 import contextvars
 from datetime import datetime
+from app.core.config.application import APPLICATION_CONFIG
 
 submit_id_var = contextvars.ContextVar('submit_id', default='')
 class CustomLogFilter(logging.Filter):
@@ -26,7 +27,7 @@ class CustomTimedRotatingFileHandler(TimedRotatingFileHandler):
 
         # ตรวจสอบไฟล์ที่ถูกหมุนและเปลี่ยนชื่อไฟล์ให้เป็นรูปแบบที่กำหนด
         log_directory = "logs"
-        base_filename = "my_app"
+        base_filename = APPLICATION_CONFIG['applicatio_name']
         log_suffix = ".log"
 
         # ตรวจสอบไฟล์ที่ถูกหมุน
@@ -51,11 +52,16 @@ def set_submit_id(submit_id: str):
 def setup_logger(name:str):
     # กำหนด path ของไฟล์ log-config.json
     log_config_path = os.path.join('resource', 'log-config.json')
-
+    
     # โหลดไฟล์ config จาก JSON
     with open(log_config_path, 'r') as f:
         log_config = json.load(f)
 
+    pathfile_name = log_config['handlers']['file']['filename'].replace("<my_app>",APPLICATION_CONFIG['applicatio_name'])
+    log_config['handlers']['file']['filename'] = pathfile_name
+    if not os.path.exists(log_config['handlers']['file']['filename']):
+        os.makedirs(os.path.dirname(pathfile_name), exist_ok=True)
+        open(pathfile_name, "w").close()
     # ตั้งค่าระบบ logging ด้วย dictConfig
     logging.config.dictConfig(log_config)
     logger = logging.getLogger(name)
