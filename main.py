@@ -31,7 +31,7 @@ async def log_request(request: Request, call_next):
     body_str = None
     try :
         body_str = dict(json.loads(body.decode("utf-8")))# แปลงเป็น string
-    except :
+    except :  # noqa: E722
         None
     #ตั้งค่า submitId ใน ContextVar
     submit_id = None
