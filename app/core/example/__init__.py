@@ -1,18 +1,26 @@
+"""Initial Example API"""
+
 from fastapi import APIRouter
+
 from app.util.log_util import setup_logger
+from app.core.example.domain import ExampleDomain
+
 from .example_controller import ExampleController
-from .domain import ExampleDomain
 
 router = APIRouter()
-logger = setup_logger('example')
+logger = setup_logger("example")
 CONTROLER = ExampleController()
+
+
 @router.get("/example")
 def get_example():
-    logger.info('check')
+    """Test get method"""
+    logger.info("check")
     return CONTROLER.get_process()
 
-@router.post("/example")
-def post_example(criteria:ExampleDomain):
-    logger.info('check')
-    return CONTROLER.post_process(criteria)
 
+@router.post("/example")
+def post_example(criteria: ExampleDomain):
+    """Test post method"""
+    logger.info("check")
+    return CONTROLER.post_process(criteria)

@@ -1,4 +1,7 @@
 {
     "applicatio_name":"demo-agentic",
+    "environment":"local",  
+    "host":"0.0.0.0",
+    "port":5000,
     "timezone":"Asia/Bangkok"
 }

@@ -1,0 +1,3 @@
+"""Share parameter"""
+
+DATA = ""
