@@ -1,7 +1,19 @@
 {
-    "applicatio_name":"demo-agentic",
-    "environment":"local",  
+    "applicatio_name":"name",
+    "environment":"dev",  
     "host":"0.0.0.0",
     "port":5000,
-    "timezone":"Asia/Bangkok"
+    "timezone":"Asia/Bangkok",
+    "allow_file_type":[
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 
+        "application/vnd.ms-excel",                                         
+        "application/pdf",                                                  
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",  
+        "application/msword",                                                
+        "text/plain"                                                       
+    ],
+    "tmp_directory":"resource/tmp/",
+    "source_directory":"resource/sources/",
+    "limit_each_file_size":20971520,
+    "limit_per_request":104857600
 }

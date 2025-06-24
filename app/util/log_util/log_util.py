@@ -11,17 +11,18 @@ from datetime import datetime
 import pytz
 
 from app.core.config.application import APPLICATION_CONFIG
-
+logging.getLogger("python_multipart.multipart").setLevel(logging.ERROR)
 logging.getLogger("watchfiles").setLevel(logging.ERROR)
-submit_id_var = contextvars.ContextVar("submit_id", default="")
+add_on_var = contextvars.ContextVar("add_on", default="")
 
 
 class CustomLogFilter(logging.Filter):
-    """Class for add submit id to thread name"""
+    """Fill submit id"""
 
     def filter(self, record):
+        """fill submit"""
         # ดึงค่า submitId จาก ContextVar และเพิ่มเข้าไปใน LogRecord
-        record.submit_id = submit_id_var.get("")  # ถ้าไม่มี submitId, ใส่เป็นค่าว่าง
+        record.add_on = add_on_var.get("")  # ถ้าไม่มี submitId, ใส่เป็นค่าว่าง
         return True
 
 
@@ -75,12 +76,41 @@ class CustomTimedRotatingFileHandler(TimedRotatingFileHandler):
                 destination = os.path.join(archived_folder, new_filename)
                 shutil.move(source, destination)
 
+FORMAT_APPLICATION = CustomFormatter(
+    "%(asctime)s %(levelname)s [%(thread)d-%(threadName)s%(add_on)s] %(name)s:%(lineno)d %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S,%f",
+)
+
+FORMAT_ENTRY_EXIT = CustomFormatter(
+    "%(asctime)s %(levelname)s [%(thread)d-%(threadName)s%(add_on)s]%(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S,%f",
+)
 
 # ฟังก์ชันสำหรับตั้งค่า submitId
-def set_submit_id(submit_id: str):
-    """method set submit id per request"""
-    submit_id_var.set(submit_id)
+def set_add_on_thread(submit_id: str):
+    """Set submit id"""
+    add_on_var.set(submit_id)
 
+def setup_entry_exit(name:str):
+    """Entry & Exit"""
+    # กำหนด path ของไฟล์ log-config.json
+    log_config_path = os.path.join('resource', 'log-config.json')
+
+    with open(file=log_config_path, mode="r",encoding="utf-8") as f:
+        log_config = json.load(f)
+
+    pathfile_name = log_config["handlers"]["file"]["filename"].replace(
+        "<my_app>", APPLICATION_CONFIG["applicatio_name"]
+    )
+
+    log_config["handlers"]["file"]["filename"] = pathfile_name
+    # ตั้งค่า logger จาก log-config.json
+    logging.config.dictConfig(log_config)
+    logger = logging.getLogger(name)
+
+    custom_filter = CustomLogFilter()
+    logger.addFilter(custom_filter)
+    return logger
 
 def setup_logger(name: str):
     """set loger each class"""

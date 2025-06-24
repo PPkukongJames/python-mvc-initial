@@ -1,8 +1,12 @@
-from fastapi import Response
-import json
+"""Example controller"""
 
+import json
+from typing import List
+
+from fastapi import File, Response, UploadFile, HTTPException
+
+from app.core.example.domain import ExampleDomain,ExampleSubmitUploadDomain
 from app.util.log_util import setup_logger
-from app.core.example.domain import ExampleDomain
 
 from .example_manager import ExampleManager
 
@@ -20,6 +24,7 @@ class ExampleController:
         self.manager = ExampleManager()
 
     def get_process(self):
+        """GET example"""
         self.logger.debug("get process")
         response = None
 
@@ -61,3 +66,51 @@ class ExampleController:
         )
 
         return response
+
+    async def upload_files(self,files: List[UploadFile] = File(...)):
+        """Upload file"""
+        self.logger.debug("upload file")
+
+        response = None
+
+        try :
+            self.logger.debug("send process")
+            response = await self.manager.upload_files(files)
+        except HTTPException as e:
+            error_message = {"message": str(e)}
+            response = Response(
+                content=json.dumps(error_message),
+                status_code=400,
+                media_type="application/json",
+            )
+        except Exception as e:
+            # Handle all other exceptions
+            error_message = {"message": str(e)}
+            response = Response(
+                content=json.dumps(error_message),
+                status_code=500,
+                media_type="application/json",
+            )
+            self.logger.error("Exception occurred", exc_info=True)
+
+        return response
+
+    def submit_files_upload(self,criteria:ExampleSubmitUploadDomain):
+        """submit file"""
+        response = None
+
+        try :
+            self.logger.debug("send process")
+            response = self.manager.submit_files_upload(criteria)
+        except Exception as e:
+            # Handle all other exceptions
+            error_message = {"message": str(e)}
+            response = Response(
+                content=json.dumps(error_message),
+                status_code=500,
+                media_type="application/json",
+            )
+            self.logger.error("Exception occurred", exc_info=True)
+
+        return response
+            

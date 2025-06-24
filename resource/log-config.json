@@ -9,7 +9,7 @@
     "formatters": {
         "detailed": {
             "()": "app.util.log_util.log_util.CustomFormatter",
-            "format": "%(asctime)s %(levelname)s [%(thread)d-%(threadName)s%(submit_id)s] %(name)s:%(lineno)d %(message)s",
+            "format": "%(asctime)s %(levelname)s [%(thread)d-%(threadName)s%(add_on)s] %(name)s:%(lineno)d %(message)s",
             "datefmt": "%Y-%m-%d %H:%M:%S,%f"
         }
     },
