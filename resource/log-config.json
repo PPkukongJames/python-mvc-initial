@@ -7,49 +7,87 @@
         }
     },
     "formatters": {
-        "detailed": {
+        "application_format": {
             "()": "app.util.log_util.log_util.CustomFormatter",
             "format": "%(asctime)s %(levelname)s [%(thread)d-%(threadName)s%(add_on)s] %(name)s:%(lineno)d %(message)s",
             "datefmt": "%Y-%m-%d %H:%M:%S,%f"
+        },
+        "submitter_format": {
+            "()": "app.util.log_util.log_util.CustomFormatter",
+            "format": "%(asctime)s %(levelname)s [%(thread)d-%(threadName)s%(add_on)s]%(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S,%f"
+        },
+        "access_format": {
+            "format": "%(message)s"
         }
     },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
             "level": "DEBUG",
-            "formatter": "detailed",
+            "formatter": "application_format",
             "filters": ["custom_filter"]
         },
-        "file": {
+        "application_log": {
             "class": "app.util.log_util.log_util.CustomTimedRotatingFileHandler",
             "level": "DEBUG",
-            "formatter": "detailed",
+            "formatter": "application_format",
             "filename": "logs/<my_app>.log",
             "when": "midnight", 
             "interval": 1,
             "backupCount": 5,
             "encoding": "utf-8",
             "filters": ["custom_filter"]
+        },
+        "submitter_log":{
+            "class": "app.util.log_util.log_util.CustomTimedRotatingFileHandler",
+            "level": "DEBUG",
+            "formatter": "submitter_format",
+            "filename": "logs/submitter.log",
+            "when": "midnight", 
+            "interval": 1,
+            "backupCount": 5,
+            "encoding": "utf-8",
+            "filters": ["custom_filter"]
+        },        
+        "access_log": {
+            "class": "app.util.log_util.log_util.CustomTimedRotatingFileHandler",
+            "level": "INFO",
+            "formatter": "access_format",
+            "filename": "logs/access.log",
+            "when": "midnight",
+            "interval": 1,
+            "backupCount": 5,
+            "encoding": "utf-8"
         }
     },
     "loggers": {
         "root": {
             "level": "DEBUG",
-            "handlers": ["console", "file"]
+            "handlers": ["console", "application_log"]
+        },
+        "submitter":{
+            "level": "INFO",
+            "handlers": ["submitter_log"]
         },
         "uvicorn": {
-            "level": "CRITICAL",
-            "handlers": ["console", "file"],
+            "level": "INFO",
+            "handlers": ["console", "application_log"],
             "propagate": false
         },
         "uvicorn.error": {
-            "level": "CRITICAL",
-            "handlers": ["console", "file"],
+            "level": "INFO",
+            "handlers": ["console", "application_log"],
             "propagate": false
         },
         "uvicorn.access": {
+            "handlers": [],
             "level": "CRITICAL",
-            "handlers": ["console", "file"],
+            "propagate": false
+        },
+        "api.access": {
+            "handlers": ["access_log"],
+            "level": "INFO",
             "propagate": false
         }
     }

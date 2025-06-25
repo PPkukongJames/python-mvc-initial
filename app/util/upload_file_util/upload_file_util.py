@@ -7,11 +7,11 @@ from typing import List
 
 from fastapi import UploadFile, HTTPException
 
-from app.util.log_util import setup_logger
+from app.util.log_util import set_application_log
 from app.util.upload_file_util.domain import SubmitFilesDomain
 from app.core.config.application import APPLICATION_CONFIG
 
-LOGGER = setup_logger("upload_file_util")
+LOGGER = set_application_log(__name__)
 
 TMP_DIRECTORY = os.path.join(APPLICATION_CONFIG["tmp_directory"])
 if not os.path.exists(TMP_DIRECTORY):

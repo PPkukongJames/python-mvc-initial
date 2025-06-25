@@ -4,13 +4,13 @@ from typing import List
 
 from fastapi import APIRouter, File, UploadFile, Form
 
-from app.util.log_util import setup_logger
+from app.util.log_util import set_application_log
 from app.core.example.domain import ExampleDomain,ExampleSubmitUploadDomain
 
 from .example_controller import ExampleController
 
 router = APIRouter()
-logger = setup_logger("example")
+logger = set_application_log(__name__)
 CONTROLER = ExampleController()
 
 

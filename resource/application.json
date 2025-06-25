@@ -1,5 +1,5 @@
 {
-    "applicatio_name":"name",
+    "applicatio_name":"app",
     "environment":"dev",  
     "host":"0.0.0.0",
     "port":5000,

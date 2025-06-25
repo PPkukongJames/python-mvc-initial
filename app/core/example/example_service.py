@@ -4,10 +4,10 @@ from typing import List
 from fastapi import File, UploadFile
 
 from app.core.example.domain import ExampleSubmitUploadDomain
-from app.util.log_util import setup_logger
+from app.util.log_util import set_application_log
 from app.util.upload_file_util.domain import SubmitFilesDomain,FileUploaded
 from app.util.upload_file_util import UploadFileUtil
-LOGGER = setup_logger("example_service")
+LOGGER = set_application_log(__name__)
 
 FILE_UTIL = UploadFileUtil()
 class ExampleService:

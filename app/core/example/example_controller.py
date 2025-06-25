@@ -6,11 +6,11 @@ from typing import List
 from fastapi import File, Response, UploadFile, HTTPException
 
 from app.core.example.domain import ExampleDomain,ExampleSubmitUploadDomain
-from app.util.log_util import setup_logger
+from app.util.log_util import set_application_log
 
 from .example_manager import ExampleManager
 
-LOGGER = setup_logger("example_controller")
+LOGGER = set_application_log(__name__)
 
 
 class ExampleController:

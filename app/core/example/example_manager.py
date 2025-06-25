@@ -4,11 +4,11 @@ from typing import List
 from fastapi import File, UploadFile
 
 from app.core.example.domain import ExampleSubmitUploadDomain
-from app.util.log_util import setup_logger
+from app.util.log_util import set_application_log
 
 from .example_service import ExampleService
 
-LOGGER = setup_logger("example_manager")
+LOGGER = set_application_log(__name__)
 
 
 class ExampleManager:
